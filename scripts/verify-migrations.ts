@@ -32,10 +32,18 @@ async function main() {
   }
 
   const rows = await db.select().from(healthCheck);
-  if (rows.length !== 1) {
+
+  // Wiersz zasiany migracją `0001` — jego obecność dowodzi, że migracje
+  // danych, nie tylko schematu, faktycznie się wykonały.
+  if (!rows.some((row) => row.label === "faza-0b")) {
     throw new Error(
-      `Oczekiwano 1 wiersza w health_check, znaleziono ${rows.length}.`,
+      "Brak wiersza zasianego migracją 0001_seed_health_check w health_check.",
     );
+  }
+
+  // Wiersz zapisany chwilę temu — dowód odczytu tego, co sami zapisaliśmy.
+  if (!rows.some((row) => row.label === label)) {
+    throw new Error("Zapisany wiersz nie jest widoczny przy odczycie.");
   }
 
   // Potwierdza, że migracja faktycznie włączyła RLS (decyzja z SHE-2).
