@@ -118,10 +118,14 @@ Zniknie migracją w Fazie 2, razem z wejściem właściwego schematu.
 **Żaden sekret nie trafia do repozytorium.** `.env.example` ma wyłącznie puste
 wartości. Lokalnie używaj `.env` (jest w `.gitignore`).
 
-| Gdzie                    | Co ustawić                                                      |
-| ------------------------ | --------------------------------------------------------------- |
-| Cloudflare Workers       | `wrangler secret put DATABASE_URL`                              |
-| GitHub → Actions secrets | `DATABASE_URL`, `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` |
+| Gdzie                            | Co ustawić                                                      |
+| -------------------------------- | --------------------------------------------------------------- |
+| GitHub → środowisko `production` | `DATABASE_URL`, `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` |
+
+To jedyne miejsce, w które trzeba wpisać sekrety ręcznie. Sekret Workera
+(`DATABASE_URL` w czasie działania aplikacji) wgrywa za Ciebie workflow
+wdrożeniowy — ręczne `wrangler secret put` jest potrzebne tylko przy
+wdrożeniu z pominięciem CI.
 
 ## Wdrożenie
 
