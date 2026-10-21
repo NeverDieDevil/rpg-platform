@@ -22,13 +22,16 @@ płatniczej ani płatnego planu.
 
 ## Wymagania
 
-- Node.js 22 lub nowszy
-- npm 10 lub nowszy
+- Node.js 24 lub nowszy
+- npm 11 lub nowszy — `package-lock.json` jest zapisany w formacie npm 11;
+  npm 10 odrzuci go przy `npm ci`. CI używa tej samej wersji.
 - konto Supabase (plan Free) — tylko jeśli chcesz uruchomić część bazodanową
 
 ## Uruchomienie lokalne
 
 ```bash
+git clone https://github.com/NeverDieDevil/rpg-platform.git
+cd rpg-platform
 npm ci
 cp .env.example .env     # Windows: copy .env.example .env
 ```
