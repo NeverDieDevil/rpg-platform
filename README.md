@@ -125,6 +125,24 @@ wartości. Lokalnie używaj `.env` (jest w `.gitignore`).
 | Gdzie                            | Co ustawić                                                      |
 | -------------------------------- | --------------------------------------------------------------- |
 | GitHub → środowisko `production` | `DATABASE_URL`, `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID` |
+| GitHub → środowisko `production` | `MIGRATIONS_DATABASE_URL` (opcjonalny, patrz niżej)             |
+
+Supabase wystawia dwa adresy do tej samej bazy, różniące się trybem puli
+(panel → **Connect** → sekcja z connection stringami):
+
+| Sekret                    | Tryb puli   | Port   | Do czego                  |
+| ------------------------- | ----------- | ------ | ------------------------- |
+| `DATABASE_URL`            | transaction | `6543` | Worker w czasie działania |
+| `MIGRATIONS_DATABASE_URL` | session     | `5432` | krok migracji w workflow  |
+
+Różnica jest istotna: tryb transaction jest zrobiony pod serverless (krótkie,
+liczne połączenia), ale nie trzyma stanu sesji. Tryb session trzyma, więc jest
+właściwy dla migracji. Oba adresy mają ten sam host `*.pooler.supabase.com`,
+tego samego użytkownika `postgres.<ref>` i to samo hasło — różni je wyłącznie
+port. Bez `MIGRATIONS_DATABASE_URL` workflow użyje `DATABASE_URL`.
+
+Adresu **direct connection** (`db.<ref>.supabase.co`) nie używamy nigdzie: na
+planie Free jest dostępny tylko po IPv6, a runnery GitHuba go nie mają.
 
 To jedyne miejsce, w które trzeba wpisać sekrety ręcznie. Sekret Workera
 (`DATABASE_URL` w czasie działania aplikacji) wgrywa za Ciebie workflow

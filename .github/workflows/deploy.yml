@@ -33,10 +33,16 @@ jobs:
       - run: npm ci
 
       # Migracje idą przed wdrożeniem, żeby nowy kod nie trafił na stary schemat.
+      #
+      # Pula Supavisor w trybie "transaction" (port 6543) nie daje stanu sesji —
+      # bez `SET`, blokad doradczych i pipeliningu. Narzędzia migracyjne na tym
+      # polegają, dlatego migracje jadą adresem z trybu "session" (ten sam host,
+      # port 5432). Gdy sekretu nie ma, używamy `DATABASE_URL` — działa, ale
+      # bez gwarancji przy bardziej złożonych migracjach.
       - name: Migracje bazy
         run: npm run db:migrate
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ secrets.MIGRATIONS_DATABASE_URL || secrets.DATABASE_URL }}
 
       - name: Build i deploy
         run: npm run cf:deploy
