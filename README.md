@@ -23,8 +23,9 @@ płatniczej ani płatnego planu.
 ## Wymagania
 
 - Node.js 24 lub nowszy
-- npm 11 lub nowszy — `package-lock.json` jest zapisany w formacie npm 11;
-  npm 10 odrzuci go przy `npm ci`. CI używa tej samej wersji.
+- npm **11.19.0** — tę wersję przypina CI. `npm ci` odrzuca lockfile
+  wygenerowany inną wersją npm, więc jeśli odświeżasz `package-lock.json`,
+  zrób to dokładnie nią (`npx npm@11.19.0 install`).
 - konto Supabase (plan Free) — tylko jeśli chcesz uruchomić część bazodanową
 
 ## Uruchomienie lokalne

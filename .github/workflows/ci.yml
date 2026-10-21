@@ -20,12 +20,17 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      # Node 24 (npm 11) — ta sama wersja, w której powstał package-lock.json.
-      # Na Node 22 (npm 10) `npm ci` odrzuca lockfile zapisany przez npm 11.
       - uses: actions/setup-node@v5
         with:
           node-version: 24
           cache: npm
+
+      # Wersja npm przypięta celowo. `npm ci` odrzuca lockfile wygenerowany
+      # przez inną wersję npm — kolejne wydania inaczej traktują opcjonalne
+      # zależności pakietów wasm32 (@emnapi/*). Przy podnoszeniu tej wersji
+      # odśwież package-lock.json dokładnie nią.
+      - name: Przypięta wersja npm
+        run: npm install -g npm@11.19.0
 
       - run: npm ci
 
