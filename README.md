@@ -117,6 +117,26 @@ zwraca, a dostęp do danych idzie wyłącznie przez nasz serwer.
 Tabela `health_check` jest tabelą kontrolną Fazy 0, nie encją produktową.
 Zniknie migracją w Fazie 2, razem z wejściem właściwego schematu.
 
+### Połączenia: jedno na żądanie, nigdy w module
+
+Zapytania uruchamiaj **wyłącznie** przez `withDb()` z `src/db/index.ts`. Nie
+twórz klienta `postgres()` w zasięgu modułu i nie trzymaj go w zmiennej
+globalnej, nawet „tylko na czas izolatu".
+
+Gniazdo TCP należy na Cloudflare Workers do kontekstu żądania, w którym
+powstało. Użyte w kolejnym żądaniu nigdy nie dostarczy odpowiedzi, a obietnica
+zapytania nigdy się nie rozwiąże — runtime wykrywa to jako zawieszenie i zwraca
+`error code: 1101`. **Żaden `try/catch` tego nie złapie**, bo nie ma wyjątku,
+jest brak odpowiedzi. Objawia się niestabilnością, nie awarią: pierwsze żądanie
+na świeżym izolacie przechodzi, każde następne wisi.
+
+### Keep-alive bazy
+
+`.github/workflows/keep-alive.yml` codziennie czyta z bazy przez
+`/api/health/db`. Supabase na planie Free pauzuje projekt po 7 dniach bez
+aktywności w bazie, a wznowienie jest ręczne. Odpytanie samej strony startowej
+nie wystarcza — Supabase liczy aktywność w bazie, nie ruch w aplikacji.
+
 ## Sekrety
 
 **Żaden sekret nie trafia do repozytorium.** `.env.example` ma wyłącznie puste

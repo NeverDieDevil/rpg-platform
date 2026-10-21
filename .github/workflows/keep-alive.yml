@@ -1,0 +1,63 @@
+name: Keep-alive bazy
+
+# Supabase na planie Free pauzuje projekt po 7 dniach bez aktywności w bazie.
+# Wznowienie jest ręczne, więc platforma zepsułaby się sama, bez żadnej zmiany
+# w kodzie. Ten workflow robi codziennie prawdziwy ODCZYT Z BAZY (nie samo
+# odpytanie strony — to Supabase nie liczy jako aktywność) i przy okazji działa
+# jak monitoring: wywraca się, gdy endpoint zdrowia przestaje odpowiadać.
+#
+# Codziennie, nie raz na tydzień, bo harmonogramy GitHuba potrafią się spóźnić
+# albo zostać pominięte przy dużym obciążeniu — dzienna częstotliwość daje
+# siedmiokrotny zapas względem terminu pauzy.
+#
+# UWAGA: GitHub wyłącza zaplanowane workflow w repozytoriach bez aktywności
+# przez 60 dni. Przy dłuższej przerwie w pracach trzeba go włączyć ręcznie
+# w zakładce Actions.
+on:
+  schedule:
+    - cron: "23 5 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      # Adres publiczny, nie sekret — celowo wpisany jawnie, żeby ten workflow
+      # nie potrzebował żadnych poświadczeń Cloudflare.
+      - name: Odczyt z bazy przez /api/health/db
+        env:
+          URL: https://rpg-platform.michal-obszan.workers.dev/api/health/db
+        run: |
+          udane=0
+          proby=5
+
+          for i in $(seq 1 "$proby"); do
+            body=$(curl -s --max-time 20 "$URL" || true)
+            case "$body" in
+              *'"status":"ok"'*'"latest":null'*)
+                echo "próba $i: odczyt pusty — $body" ;;
+              *'"status":"ok"'*)
+                echo "próba $i: ok"
+                udane=$((udane + 1)) ;;
+              *)
+                echo "próba $i: błąd — $body" ;;
+            esac
+            [ "$i" = "$proby" ] || sleep 15
+          done
+
+          echo "- Udane odczyty: $udane/$proby" >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$udane" = 0 ]; then
+            echo "::error::Żaden odczyt z bazy się nie udał — baza NIE została podtrzymana"
+            exit 1
+          fi
+
+          if [ "$udane" != "$proby" ]; then
+            echo "::error::Baza podtrzymana ($udane/$proby), ale endpoint jest niestabilny"
+            exit 1
+          fi
+
+          echo "Baza podtrzymana, endpoint stabilny."

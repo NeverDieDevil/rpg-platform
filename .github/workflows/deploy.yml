@@ -85,17 +85,38 @@ jobs:
 
           # Wymagamy nie tylko `status: ok`, ale też niepustego `latest` —
           # inaczej nie odróżnimy działającego odczytu od pustej tabeli.
-          for i in 1 2 3 4 5 6; do
+          ok() {
             body=$(curl -s --max-time 20 "$url/api/health/db" || true)
-            echo "próba $i: $body"
             case "$body" in
-              *'"status":"ok"'*'"latest":null'*) ;;
-              *'"status":"ok"'*)
-                echo "- Health: ok, odczyt z tabeli kontrolnej potwierdzony" >> "$GITHUB_STEP_SUMMARY"
-                exit 0
-                ;;
+              *'"status":"ok"'*'"latest":null'*) return 1 ;;
+              *'"status":"ok"'*) return 0 ;;
+              *) return 1 ;;
             esac
+          }
+
+          # Faza 1: czekamy na rozejście się sekretu i wdrożenia.
+          for i in 1 2 3 4 5 6; do
+            if ok; then break; fi
+            echo "oczekiwanie $i: $body"
+            if [ "$i" = 6 ]; then
+              echo "::error::/api/health/db nie potwierdził odczytu z bazy"
+              exit 1
+            fi
             sleep 10
           done
-          echo "::error::/api/health/db nie potwierdził odczytu z bazy"
-          exit 1
+
+          # Faza 2: JEDEN udany odczyt nie jest dowodem. Błąd, który zepsuł
+          # Fazę 0b, przechodził tę bramkę, bo wystarczał jej pierwszy sukces:
+          # współdzielone połączenie wisiało na każdym żądaniu poza pierwszym
+          # na izolacie, więc endpoint działał w ok. 10% zapytań. Dlatego teraz
+          # wymagamy serii pod rząd, bez ani jednej wywrotki.
+          seria=12
+          for i in $(seq 1 "$seria"); do
+            if ok; then
+              echo "seria $i/$seria: ok"
+            else
+              echo "::error::/api/health/db niestabilny — wywrotka w próbie $i z $seria: $body"
+              exit 1
+            fi
+          done
+          echo "- Health: $seria/$seria odczytów z bazy pod rząd" >> "$GITHUB_STEP_SUMMARY"

@@ -1,7 +1,7 @@
 import { desc } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
-import { getDb } from "@/db";
+import { withDb } from "@/db";
 import { healthCheck } from "@/db/schema";
 
 /**
@@ -14,11 +14,9 @@ export const dynamic = "force-dynamic";
 
 export async function GET() {
   try {
-    const [latest] = await getDb()
-      .select()
-      .from(healthCheck)
-      .orderBy(desc(healthCheck.id))
-      .limit(1);
+    const [latest] = await withDb((db) =>
+      db.select().from(healthCheck).orderBy(desc(healthCheck.id)).limit(1),
+    );
 
     return NextResponse.json({
       status: "ok",
