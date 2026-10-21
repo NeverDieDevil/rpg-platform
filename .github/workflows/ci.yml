@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Nowy push na tę samą gałąź anuluje poprzedni przebieg — oszczędza minuty Actions.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Format
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Uruchamia migracje na PGlite (Postgres w WASM) — bez dostępu do Supabase.
+      - name: Weryfikacja migracji
+        run: npm run db:verify
+
+      # cf:build uruchamia `next build`, a potem pakuje Workera przez OpenNext.
+      # Buduje dokładnie to, co trafia na produkcję.
+      - name: Build
+        run: npm run cf:build
+
+      # Tylko zależności produkcyjne. devDependencies mają znane ostrzeżenia
+      # (eslint-config-next -> braces), które nie trafiają na produkcję.
+      - name: Audyt zależności produkcyjnych
+        run: npm audit --omit=dev --audit-level=high

@@ -1,0 +1,17 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "rpg-platform",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-21",
+  // nodejs_compat jest wymagane przez OpenNext i przez sterownik `postgres`.
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS",
+  },
+  "observability": {
+    "enabled": true,
+  },
+  // DATABASE_URL jest sekretem (`wrangler secret put DATABASE_URL`),
+  // nigdy nie trafia do tego pliku ani do repozytorium.
+}

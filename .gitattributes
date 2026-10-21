@@ -1,0 +1,8 @@
+# Jednolite końce linii w repozytorium — bez szumu w diffach między Windows a CI.
+* text=auto eol=lf
+
+*.ico binary
+*.png binary
+*.jpg binary
+*.webp binary
+*.woff2 binary

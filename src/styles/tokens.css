@@ -1,0 +1,71 @@
+/*
+ * Warstwa tokenów motywu.
+ *
+ * Zasada: komponenty nigdy nie używają surowych kolorów ani rozmiarów czcionek.
+ * Używają wyłącznie nazw semantycznych (surface, fg, accent, ...), a te są
+ * przypisywane per skin. Zmiana skinu to zmiana atrybutu `data-theme` na <html>
+ * — bez dotykania komponentów.
+ *
+ * Faza 0 celowo ustawia wartości neutralne i robocze. Docelową paletę,
+ * typografię i skalę odstępów dla obu skinów dowozi Faza 1 (design system).
+ * Tutaj powstaje tylko struktura, która to przewiduje.
+ *
+ * Odstępy świadomie zostają na domyślnej skali Tailwinda (`--spacing`),
+ * żeby nie dublować dwóch niezależnych systemów odstępów.
+ */
+
+:root {
+  /* Powierzchnie i tekst */
+  --rpg-color-bg: #ffffff;
+  --rpg-color-surface: #f6f6f7;
+  --rpg-color-surface-muted: #ececee;
+  --rpg-color-border: #d9d9de;
+  --rpg-color-fg: #18181b;
+  --rpg-color-fg-muted: #5f5f6a;
+
+  /* Akcent i stany */
+  --rpg-color-accent: #4b4bd6;
+  --rpg-color-accent-fg: #ffffff;
+  --rpg-color-danger: #b4232a;
+  --rpg-color-success: #1d7a4c;
+
+  /* Typografia */
+  --rpg-font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial,
+    sans-serif;
+  --rpg-font-display: var(--rpg-font-sans);
+  --rpg-font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
+
+  /* Promienie */
+  --rpg-radius-sm: 0.25rem;
+  --rpg-radius-md: 0.5rem;
+  --rpg-radius-lg: 1rem;
+}
+
+/*
+ * Skin "fantasy" — placeholder Fazy 0. Wartości do ustalenia w Fazie 1.
+ */
+[data-theme="fantasy"] {
+  --rpg-color-bg: #fbf7ef;
+  --rpg-color-surface: #f3ebdc;
+  --rpg-color-surface-muted: #e8dcc6;
+  --rpg-color-border: #cbb894;
+  --rpg-color-fg: #2b2015;
+  --rpg-color-fg-muted: #6b5942;
+  --rpg-color-accent: #7a3b1e;
+  --rpg-color-accent-fg: #fbf7ef;
+}
+
+/*
+ * Skin "neon" (cyberpunk) — placeholder Fazy 0. Wartości do ustalenia w Fazie 1.
+ */
+[data-theme="neon"] {
+  --rpg-color-bg: #0b0b12;
+  --rpg-color-surface: #14141f;
+  --rpg-color-surface-muted: #1d1d2b;
+  --rpg-color-border: #2f2f45;
+  --rpg-color-fg: #e8e8f2;
+  --rpg-color-fg-muted: #9a9ab4;
+  --rpg-color-accent: #19d2c3;
+  --rpg-color-accent-fg: #06060b;
+}
