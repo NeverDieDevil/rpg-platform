@@ -131,4 +131,5 @@ powyżej, ustawionych w środowisku `production` repozytorium.
 
 ## Licencja
 
-Do ustalenia — patrz `NOTICE.md`.
+[MIT](LICENSE). Licencja obejmuje kod tego repozytorium — zastrzeżenia co do
+treści systemów RPG i materiałów użytkowników opisuje `NOTICE.md`.

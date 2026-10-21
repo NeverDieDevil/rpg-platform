@@ -1,15 +1,13 @@
 # Nota prawna
 
-## Licencja kodu — do ustalenia
+## Licencja kodu
 
-Copyright (c) 2026 SherockyIT. Wszelkie prawa zastrzeżone.
+Kod w tym repozytorium jest objęty **licencją MIT** — pełny tekst w pliku
+`LICENSE`. Decyzja zarządu z 21.10.2026.
 
-Repozytorium jest prywatne i nie ma jeszcze wybranej licencji. Do czasu decyzji
-zarządu obowiązuje domyślne prawo autorskie: bez licencji nikt poza
-właścicielem nie ma prawa kopiować, modyfikować ani rozpowszechniać tego kodu.
-
-Zarząd rozstrzyga, czy projekt zostaje zamknięty (własnościowy), czy dostaje
-licencję otwartą. Po decyzji ten plik zastępuje właściwy `LICENSE`.
+Licencja obejmuje wyłącznie kod, który tu leży. Nie rozciąga się na treści
+systemów RPG, materiały wgrywane przez użytkowników ani znaki towarowe —
+te opisują kolejne sekcje tego dokumentu.
 
 ## Treści systemów RPG
 
