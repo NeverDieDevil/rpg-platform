@@ -29,3 +29,22 @@ Tła map trafiają do aplikacji jako adresy URL do zewnętrznych obrazów — ni
 hostujemy tych plików. Odpowiedzialność za prawa do wskazanych obrazów leży po
 stronie użytkownika, który podaje adres. Zasady korzystania do spisania przed
 otwarciem bety.
+
+## Zasoby graficzne (Faza 1)
+
+Wszystkie zasoby mają licencje dopuszczające użycie komercyjne. Fonty są
+hostowane razem z aplikacją (pakiety `@fontsource*`, bez zapytań do
+zewnętrznych serwerów).
+
+| Zasób                                  | Użycie                      | Licencja                            |
+| -------------------------------------- | --------------------------- | ----------------------------------- |
+| Cinzel (`@fontsource-variable/cinzel`) | nagłówki skinu fantasy      | SIL Open Font License 1.1           |
+| Crimson Pro                            | treść skinu fantasy         | SIL Open Font License 1.1           |
+| Chakra Petch                           | nagłówki skinu neon         | SIL Open Font License 1.1           |
+| Space Grotesk                          | treść skinu neon            | SIL Open Font License 1.1           |
+| JetBrains Mono                         | wartości, rzuty (oba skiny) | SIL Open Font License 1.1           |
+| Lucide (`lucide-react`)                | ikony interfejsu            | ISC (część kształtów: MIT, Feather) |
+
+Aplikacja nie zawiera logotypów, znaków ani grafik pochodzących z podręczników
+RPG ani od wydawców systemów. Znak marki „Platforma RPG” (ikona kości) to
+standardowa ikona Lucide.

@@ -5,32 +5,118 @@
  * Mostek tokeny -> narzędzia Tailwinda.
  *
  * `@theme inline` sprawia, że klasy `bg-surface`, `text-fg-muted`,
- * `border-border`, `rounded-md` itd. czytają zmienne z tokens.css w locie.
- * Dzięki temu te same klasy dają inny wygląd po zmianie `data-theme`.
+ * `border-border`, `rounded-md`, `shadow-md` itd. czytają zmienne z tokens.css
+ * w locie. Dzięki temu te same klasy dają inny wygląd po zmianie `data-theme`.
  */
 @theme inline {
   --color-bg: var(--rpg-color-bg);
   --color-surface: var(--rpg-color-surface);
+  --color-surface-raised: var(--rpg-color-surface-raised);
   --color-surface-muted: var(--rpg-color-surface-muted);
+  --color-overlay: var(--rpg-color-overlay);
   --color-border: var(--rpg-color-border);
+  --color-border-strong: var(--rpg-color-border-strong);
   --color-fg: var(--rpg-color-fg);
   --color-fg-muted: var(--rpg-color-fg-muted);
+  --color-fg-disabled: var(--rpg-color-fg-disabled);
+  --color-bg-disabled: var(--rpg-color-bg-disabled);
   --color-accent: var(--rpg-color-accent);
+  --color-accent-hover: var(--rpg-color-accent-hover);
+  --color-accent-active: var(--rpg-color-accent-active);
   --color-accent-fg: var(--rpg-color-accent-fg);
+  --color-highlight: var(--rpg-color-highlight);
+  --color-highlight-fg: var(--rpg-color-highlight-fg);
   --color-danger: var(--rpg-color-danger);
+  --color-danger-fg: var(--rpg-color-danger-fg);
   --color-success: var(--rpg-color-success);
+  --color-success-fg: var(--rpg-color-success-fg);
+  --color-warning: var(--rpg-color-warning);
+  --color-warning-fg: var(--rpg-color-warning-fg);
+  --color-info: var(--rpg-color-info);
+  --color-info-fg: var(--rpg-color-info-fg);
+  --color-focus-ring: var(--rpg-color-focus-ring);
 
   --font-sans: var(--rpg-font-sans);
   --font-display: var(--rpg-font-display);
   --font-mono: var(--rpg-font-mono);
 
+  --text-xs: var(--rpg-text-xs);
+  --text-xs--line-height: var(--rpg-leading-snug);
+  --text-sm: var(--rpg-text-sm);
+  --text-sm--line-height: var(--rpg-leading-snug);
+  --text-base: var(--rpg-text-base);
+  --text-base--line-height: var(--rpg-leading-normal);
+  --text-lg: var(--rpg-text-lg);
+  --text-lg--line-height: var(--rpg-leading-snug);
+  --text-xl: var(--rpg-text-xl);
+  --text-xl--line-height: var(--rpg-leading-snug);
+  --text-2xl: var(--rpg-text-2xl);
+  --text-2xl--line-height: var(--rpg-leading-tight);
+  --text-3xl: var(--rpg-text-3xl);
+  --text-3xl--line-height: var(--rpg-leading-tight);
+  --text-4xl: var(--rpg-text-4xl);
+  --text-4xl--line-height: var(--rpg-leading-tight);
+
   --radius-sm: var(--rpg-radius-sm);
   --radius-md: var(--rpg-radius-md);
   --radius-lg: var(--rpg-radius-lg);
+
+  --shadow-sm: var(--rpg-shadow-sm);
+  --shadow-md: var(--rpg-shadow-md);
+  --shadow-lg: var(--rpg-shadow-lg);
 }
 
 body {
   background-color: var(--rpg-color-bg);
   color: var(--rpg-color-fg);
   font-family: var(--rpg-font-sans);
+  font-size: var(--rpg-text-base);
+  line-height: var(--rpg-leading-normal);
+}
+
+/* Nagłówki i elementy `font-display` dziedziczą charakter skinu z tokenów. */
+h1,
+h2,
+h3,
+h4,
+.font-display {
+  font-family: var(--rpg-font-display);
+  font-weight: var(--rpg-display-weight);
+  text-transform: var(--rpg-display-transform);
+  letter-spacing: var(--rpg-display-tracking);
+  line-height: var(--rpg-leading-tight);
+}
+
+/* Widoczny focus wszędzie; komponenty mogą go tylko dopracować, nie wyłączyć. */
+:focus-visible {
+  outline: var(--rpg-focus-ring-width) solid var(--rpg-color-focus-ring);
+  outline-offset: var(--rpg-focus-ring-offset);
+}
+
+::selection {
+  background-color: var(--rpg-color-accent);
+  color: var(--rpg-color-accent-fg);
+}
+
+@keyframes rpg-shimmer {
+  to {
+    background-position-x: -200%;
+  }
+}
+
+@keyframes rpg-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

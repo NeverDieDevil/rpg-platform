@@ -1,17 +1,29 @@
+import Link from "next/link";
+
+import { PageTitle, SiteShell } from "@/components/site-shell";
+import { buttonClasses } from "@/components/ui";
+
 export default function HomePage() {
   return (
-    <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col justify-center gap-4 px-6 py-16">
-      <h1 className="font-display text-3xl font-semibold">Platforma RPG</h1>
-      <p className="text-fg-muted">
-        Szkielet aplikacji (Faza 0). Funkcje produktowe dochodzą w kolejnych
-        fazach.
-      </p>
-      <p className="text-fg-muted text-sm">
+    <SiteShell>
+      <PageTitle
+        title="Platforma RPG"
+        lead="Narzędzie do prowadzenia sesji RPG: kampanie, postacie i pokój sesji na żywo. Poniżej wejścia do widoków poglądowych Fazy 1."
+      />
+      <div className="flex flex-wrap gap-3">
+        <Link href="/design" className={buttonClasses("primary", "lg")}>
+          Design system
+        </Link>
+        <Link href="/makiety" className={buttonClasses("secondary", "lg")}>
+          Makiety ekranów
+        </Link>
+      </div>
+      <p className="text-fg-muted mt-8 text-sm">
         Stan połączenia z bazą:{" "}
         <a className="text-accent underline" href="/api/health/db">
           /api/health/db
         </a>
       </p>
-    </main>
+    </SiteShell>
   );
 }

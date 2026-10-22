@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 
-import { DEFAULT_THEME } from "@/lib/theme";
+import { THEME_COOKIE, resolveTheme } from "@/lib/theme";
+import "@fontsource-variable/cinzel";
+import "@fontsource-variable/crimson-pro";
+import "@fontsource-variable/space-grotesk";
+import "@fontsource-variable/jetbrains-mono";
+import "@fontsource/chakra-petch/500.css";
+import "@fontsource/chakra-petch/600.css";
+import "@fontsource/chakra-petch/700.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -8,13 +16,15 @@ export const metadata: Metadata = {
   description: "Platforma do prowadzenia sesji RPG online.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  // Skin wybiera serwer z ciasteczka, więc pierwszy HTML ma już `data-theme`
+  // i przeglądarka maluje właściwe kolory — bez skryptu i bez mignięcia.
+  const theme = resolveTheme((await cookies()).get(THEME_COOKIE)?.value);
+
   return (
-    // `data-theme` wybiera skin z src/styles/tokens.css.
-    // Faza 0: skin statyczny. Faza 1: przełączany per kampania.
-    <html lang="pl" data-theme={DEFAULT_THEME} className="h-full antialiased">
+    <html lang="pl" data-theme={theme} className="h-full antialiased">
       <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );
