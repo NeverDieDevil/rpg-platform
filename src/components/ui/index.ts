@@ -1,8 +1,10 @@
 export { Avatar } from "./avatar";
 export { Badge } from "./badge";
 export type { BadgeVariant } from "./badge";
-export { Button, buttonClasses } from "./button";
-export type { ButtonProps, ButtonSize, ButtonVariant } from "./button";
+export { Button } from "./button";
+export { buttonClasses } from "./button-classes";
+export type { ButtonProps } from "./button";
+export type { ButtonSize, ButtonVariant } from "./button-classes";
 export { Card, CardHeader } from "./card";
 export {
   Checkbox,
