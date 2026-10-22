@@ -43,6 +43,10 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
+      # Kontrast WCAG AA par tokenów w obu skinach — błąd blokuje scalenie.
+      - name: Kontrast skinów
+        run: npm run check:contrast
+
       # Uruchamia migracje na PGlite (Postgres w WASM) — bez dostępu do Supabase.
       - name: Weryfikacja migracji
         run: npm run db:verify
