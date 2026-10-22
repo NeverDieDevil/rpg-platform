@@ -68,6 +68,7 @@ export function AppHeader({
                 <li key={item.href}>
                   <Link
                     href={item.href}
+                    onClick={() => setOpen(false)}
                     aria-current={current ? "page" : undefined}
                     className={cn(
                       "flex min-h-10 items-center rounded-md px-3 transition-colors",

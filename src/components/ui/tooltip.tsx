@@ -37,9 +37,11 @@ export function Tooltip({
         id={id}
         role="tooltip"
         hidden={!visible}
-        className="border-border-strong bg-surface-raised text-fg absolute bottom-full left-1/2 z-40 mb-2 w-max max-w-64 -translate-x-1/2 rounded-md border px-3 py-1.5 text-sm shadow-md"
+        className="absolute bottom-full left-1/2 z-40 w-max max-w-64 -translate-x-1/2 pb-2"
       >
-        {text}
+        <span className="border-border-strong bg-surface-raised text-fg block rounded-md border px-3 py-1.5 text-sm shadow-md">
+          {text}
+        </span>
       </span>
     </span>
   );

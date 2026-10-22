@@ -65,8 +65,14 @@ export function Button({
       aria-disabled={loading || undefined}
       aria-busy={loading || undefined}
       // Podczas ładowania przycisk zostaje w kolejności tabulacji (nie `disabled`),
-      // ale kliknięcie jest ignorowane.
-      onClick={loading ? undefined : onClick}
+      // ale kliknięcie i natywny submit formularza są blokowane.
+      onClick={(e) => {
+        if (loading) {
+          e.preventDefault();
+          return;
+        }
+        onClick?.(e);
+      }}
       {...rest}
     >
       {loading ? <Spinner className="size-4" /> : null}
